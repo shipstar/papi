@@ -1,12 +1,5 @@
 require "papi/version"
 
-require 'papi/aws'
-require 'papi/locale'
-require 'papi/version'
-require 'papi/aws/cache'
-require 'papi/aws/search'
-require 'papi/aws/shopping_cart'
-
 module Papi
   # A top-level exception container class.
   #
@@ -114,7 +107,7 @@ module Papi
 
 	if readable
 
-	  Amazon.dprintf( 'Opening %s ...', cf ) if config_class == File
+	  Papi.dprintf( 'Opening %s ...', cf ) if config_class == File
 
 	  config_class.open( cf ) { |f| lines = f.readlines }.each do |line|
 	    line.chomp!
@@ -123,13 +116,13 @@ module Papi
 	    #
 	    next if line =~ /^(#|$)/
 
-	    Amazon.dprintf( 'Read: %s', line )
+	    Papi.dprintf( 'Read: %s', line )
 
 	    # Determine whether we're entering the subsection of a new locale.
 	    #
 	    if match = line.match( /^\[(\w+)\]$/ )
 	      locale = match[1]
-	      Amazon.dprintf( "Config locale is now '%s'.", locale )
+	      Papi.dprintf( "Config locale is now '%s'.", locale )
 	      next
 	    end
 
@@ -160,3 +153,10 @@ module Papi
   end
   
 end
+
+require 'papi/aws'
+require 'papi/locale'
+require 'papi/version'
+require 'papi/aws/cache'
+require 'papi/aws/search'
+require 'papi/aws/shopping_cart'
