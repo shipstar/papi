@@ -262,10 +262,8 @@ module Papi
 	  # when Module#const_defined? is invoked a few lines down from here.
 	  #
 	  line.untaint
-	  
-	  m = line.match( /Papi::AWS::AWSObject::([^ ]+)/ )
 
-	  if m
+	  if m = line.match( /Papi::AWS::AWSObject::([^ ]+)/ )
 	    cl_name = [ m[1].chomp ]
 	  
 	    # Module#const_defined? takes 2 parameters in Ruby 1.9.
@@ -273,9 +271,7 @@ module Papi
 	    cl_name << false if RUBY_VERSION >= '1.9.0'
 	  
 	    unless AWSObject.const_defined?( *cl_name )
-	      puts m[1].inspect
-	      puts m[1].chomp.inspect
-	      AWSObject.const_set( m[1].chomp, Class.new( AWSObject ) )
+	      AWSObject.const_set( cl_name[0], Class.new( AWSObject ) )
 	    end
 	  
 	  end
